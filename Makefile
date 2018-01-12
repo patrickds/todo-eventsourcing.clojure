@@ -1,3 +1,7 @@
+.PHONY: install
+install:
+	lein deps
+
 .PHONY: test
 test:
 	lein midje
