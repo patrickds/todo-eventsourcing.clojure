@@ -12,7 +12,7 @@ test.watch:
 
 .PHONY: coverage
 coverage:
-	lein cloverage --runner :midje
+	lein cloverage --runner :midje --codecov
 
 .PHONY: lint
 lint:

@@ -4,3 +4,7 @@ install:
 
 script:
   - make test
+
+after_success:
+- CLOVERAGE_VERSION=1.0.10 make coverage
+- bash <(curl -s https://codecov.io/bash) -f target/coverage/codecov.json
