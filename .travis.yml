@@ -3,6 +3,10 @@ jobs:
   include:
     - stage: build
       script: make install
+    -
+      script: make lint
+    -
+      script: make analyze
 
     - stage: test
       script: make test

@@ -21,3 +21,7 @@ lint:
 .PHONY: format
 format:
 	lein cljfmt fix
+
+.PHONY: analyze
+analize:
+	lein kibit

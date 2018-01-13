@@ -9,4 +9,5 @@
                    :plugins [[lein-midje "3.2.1"]
                              [lein-cljfmt "0.5.7"]
                              [jonase/eastwood "0.2.5"]
-                             [lein-cloverage "1.0.10"]]}})
+                             [lein-cloverage "1.0.10"]
+                             [lein-kibit "0.1.5"]]}})
