@@ -25,3 +25,7 @@ format:
 .PHONY: analyze
 analize:
 	lein kibit
+
+.PHONY: pre.commit
+pre.commit:
+	make format && make lint && make analyze
