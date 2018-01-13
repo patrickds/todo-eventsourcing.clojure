@@ -9,4 +9,5 @@
       (create-task-command clock-now uuid "I'm a task") => {:type :task-created
                                                             :created-at (clock-now)
                                                             :task/id uuid
-                                                            :task/description "I'm a task"})
+                                                            :task/description "I'm a task"
+                                                            :task/status :active})

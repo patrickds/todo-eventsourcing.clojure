@@ -3,4 +3,4 @@
 (defn reduce-task-created [acc current]
   (assoc acc (:task/id current) {:id (:task/id current)
                                  :description (:task/description current)
-                                 :status :active}))
+                                 :status (:task/status current)}))

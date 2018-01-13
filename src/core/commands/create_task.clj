@@ -5,4 +5,5 @@
   {:type :task-created
    :created-at (clock-now)
    :task/id uuid
-   :task/description description})
+   :task/description description
+   :task/status :active})
