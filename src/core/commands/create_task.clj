@@ -1,5 +1,4 @@
-(ns core.commands.create-task
-  (:require [clojure.core :refer :all]))
+(ns core.commands.create-task)
 
 (defn create-task-command [clock-now uuid description]
   {:type :task-created
