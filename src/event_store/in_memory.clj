@@ -3,5 +3,5 @@
 
 (defrecord InMemoryStore [state]
   EventStore
-  (load-events [store] @(:state store))
+  (load-events [store] (sort-by :created-at @(:state store)))
   (save-event! [store event] (swap! (:state store) conj event)))
