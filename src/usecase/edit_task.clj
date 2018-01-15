@@ -1,16 +1,18 @@
 (ns usecase.edit-task
-  (:require [core.event-store :refer :all]))
+  (:require [failjure.core :as f]
+            [core.event-store :refer :all]
+            [core.commands.edit-task :refer :all]
+            [usecase.list-all-tasks :as list-all-tasks]))
 
-(defn clock-now [] (java.time.LocalDateTime/now))
+(defn- clock-now [] (java.time.LocalDateTime/now))
 
-(defn edit-task-command [id description]
-  {:type :task-edited
-   :created-at (clock-now)
-   :task/id id
-   :task/description description})
+(defn- edit-task! [store state id description]
+  (f/ok->> (edit-task-command clock-now state id description)
+           (save-event! store)))
 
 (defn execute! [store id description]
-  (do
-    (->> (edit-task-command id description)
-         (save-event! store))
-    id))
+  (let [state (list-all-tasks/execute store)
+        result (edit-task! store state id description)]
+    (if (f/failed? result)
+      result
+      id)))

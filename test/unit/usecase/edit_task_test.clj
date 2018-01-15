@@ -1,5 +1,6 @@
 (ns usecase.edit-task-test
   (:require [midje.sweet :refer :all]
+            [failjure.core :as f]
             [event-store.in-memory :refer :all]
             [core.event-store :refer :all]
             [usecase.create-task :as create-task]
@@ -35,3 +36,11 @@
                (count all-tasks) => 1)
          (fact "Task should have edited description"
                (:description task) => "Buy 12 eggs")))
+
+(facts "When editing a task that doesn't existe"
+       (let [result (edit-task/execute! store "unknown-id" "Buy 12 eggs")]
+         (fact "It should fail with proper message"
+               result => f/failed?
+               (f/message result) => "Task with id unknown-id not found")
+         (fact "Should not add events into store"
+               (count (load-events store)) => 0)))
