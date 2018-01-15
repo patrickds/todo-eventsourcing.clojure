@@ -1,9 +1,8 @@
 (ns usecase.create-task
-  (:require [core.event-store :refer :all]
+  (:require [core.clock :refer :all]
+            [core.uuid-generator :refer :all]
+            [core.event-store :refer :all]
             [core.commands.create-task :refer :all]))
-
-(defn generate-uuid [] (java.util.UUID/randomUUID))
-(defn clock-now [] (java.time.LocalDateTime/now))
 
 (defn execute! [store description]
   (let [uuid (generate-uuid)]

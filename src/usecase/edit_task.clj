@@ -1,10 +1,9 @@
 (ns usecase.edit-task
   (:require [failjure.core :as f]
+            [core.clock :refer :all]
             [core.event-store :refer :all]
             [core.commands.edit-task :refer :all]
             [usecase.list-all-tasks :as list-all-tasks]))
-
-(defn- clock-now [] (java.time.LocalDateTime/now))
 
 (defn- edit-task! [store state id description]
   (f/ok->> (edit-task-command clock-now state id description)
