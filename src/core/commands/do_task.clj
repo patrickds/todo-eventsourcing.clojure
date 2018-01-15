@@ -1,5 +1,5 @@
 (ns core.commands.do-task
-  (:require [failjure.core :as f]))
+  (:require [core.commands.failures :refer :all]))
 
 (defn- task-exists? [state id]
   (some #(= (:id %) id) state))
@@ -10,12 +10,7 @@
    :task/id id
    :task/status :completed})
 
-(defn- build-fail [id]
-  (->> (str id)
-       (format "Task with id %s not found")
-       (f/fail)))
-
 (defn do-task-command [clock-now state id]
   (if (task-exists? state id)
     (do-task-event clock-now id)
-    (build-fail id)))
+    (task-not-found id)))
