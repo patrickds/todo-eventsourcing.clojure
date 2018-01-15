@@ -1,8 +1,6 @@
 (ns core.commands.edit-task
-  (:require [core.commands.failures :refer :all]))
-
-(defn- task-exists? [id state]
-  (some #(= (:id %) id) state))
+  (:require [core.commands.failures :refer :all]
+            [core.predicates :refer :all]))
 
 (defn- task-edited-event [created-at id description]
   {:type :task-edited
@@ -11,6 +9,6 @@
    :task/description description})
 
 (defn edit-task-command [clock-now state id description]
-  (if (task-exists? id state)
+  (if (task-exist? state id)
     (task-edited-event (clock-now) id description)
     (task-not-found id)))

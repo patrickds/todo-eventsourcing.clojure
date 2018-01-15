@@ -1,8 +1,6 @@
 (ns core.commands.do-task
-  (:require [core.commands.failures :refer :all]))
-
-(defn- task-exists? [state id]
-  (some #(= (:id %) id) state))
+  (:require [core.commands.failures :refer :all]
+            [core.predicates :refer :all]))
 
 (defn- do-task-event [clock-now id]
   {:type :task-done
@@ -11,6 +9,6 @@
    :task/status :completed})
 
 (defn do-task-command [clock-now state id]
-  (if (task-exists? state id)
+  (if (task-exist? state id)
     (do-task-event clock-now id)
     (task-not-found id)))
