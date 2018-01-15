@@ -3,4 +3,6 @@
 (defn reduce-task-edited [acc current]
   (let [task-id (:task/id current)
         task-description (:task/description current)]
-    (assoc-in acc [task-id :description] task-description)))
+    (if (contains? acc task-id)
+      (assoc-in acc [task-id :description] task-description)
+      acc)))
