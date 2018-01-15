@@ -38,9 +38,10 @@
                (:description task) => "Buy 12 eggs")))
 
 (facts "When editing a task that doesn't existe"
-       (let [result (edit-task/execute! store "unknown-id" "Buy 12 eggs")]
+       (let [result (edit-task/execute! store "unknown-id" "Buy 12 eggs")
+             events (load-events store)]
          (fact "It should fail with proper message"
                result => f/failed?
                (f/message result) => "Task with id unknown-id not found")
          (fact "Should not add events into store"
-               (count (load-events store)) => 0)))
+               (count events) => 0)))
