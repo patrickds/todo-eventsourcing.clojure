@@ -22,6 +22,6 @@ $ make test.watch     # runs tests in watch mode
 $ make coverage       # runs code coverage
 $ make lint           # runs eastwood linter
 $ make format         # runs cljfmt code formatter
-$ make analyze        # runs kibit static analisis
+$ make analyze        # runs kibit static analysis
 $ make pre.commit     # runs lint, format and analyze
 ```
