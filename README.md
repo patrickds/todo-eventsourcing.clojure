@@ -16,10 +16,12 @@ A basic todo system architected around event sourcing techniques :)
 ## Usage
 
 ```
-$ make install
-$ make test
-$ make test.watch
-$ make coverage
-$ make lint
-$ make format
+$ make install        # install all dependencies
+$ make test           # runs all tests
+$ make test.watch     # runs tests in watch mode
+$ make coverage       # runs code coverage
+$ make lint           # runs eastwood linter
+$ make format         # runs cljfmt code formatter
+$ make analyze        # runs kibit static analisis
+$ make pre.commit     # runs lint, format and analyze
 ```
