@@ -1,15 +1,18 @@
 (ns usecase.do-task
-  (:require [core.event-store :refer :all]
-            [core.clock :refer :all]))
+  (:require [failjure.core :as f]
+            [core.event-store :refer :all]
+            [core.clock :refer :all]
+            [core.commands.do-task :refer :all]
+            [usecase.list-all-tasks :as list-all-tasks]))
 
-(defn- do-task-command [clock-now id]
-  {:type :task-done
-   :created-at (clock-now)
-   :task/id id
-   :task/status :completed})
+(defn- do-task! [store state id]
+  (f/ok->> id
+           (do-task-command clock-now state)
+           (save-event! store)))
 
 (defn execute! [store id]
-  (->> id
-       (do-task-command clock-now)
-       (save-event! store))
-  id)
+  (let [state (list-all-tasks/execute store)
+        result (do-task! store state id)]
+    (if (f/failed? result)
+      result
+      id)))

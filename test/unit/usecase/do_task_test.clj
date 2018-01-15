@@ -1,5 +1,6 @@
 (ns usecase.do-task-test
   (:require [midje.sweet :refer :all]
+            [failjure.core :as f]
             [core.event-store :refer :all]
             [event-store.in-memory :refer :all]
             [usecase.create-task :as create-task]
@@ -25,3 +26,11 @@
                task-done-id => task-id)
          (fact "Task should have status :completed"
                (:status task) => :completed)))
+
+(facts "When doing an unkown task"
+       (let [result (do-task/execute! store "unkown id")
+             events (load-events store)]
+         (fact "It should fail with proper message"
+               result => f/failed?)
+         (fact "It should not add events into the store"
+               (count events) => 0)))
