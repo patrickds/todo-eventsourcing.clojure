@@ -6,8 +6,7 @@
             [usecase.list-all-tasks :as list-all-tasks]))
 
 (defn- do-task! [store state id]
-  (f/ok->> id
-           (do-task-command clock-now state)
+  (f/ok->> (do-task-command clock-now state id)
            (save-event! store)))
 
 (defn execute! [store id]
