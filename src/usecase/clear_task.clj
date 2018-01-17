@@ -3,5 +3,4 @@
             [core.commands.clear-task :refer :all]))
 
 (defn execute! [store clock-now id]
-  (->> (clear-task-command clock-now id)
-       (save-event! store)))
+  (save-event! store (clear-task-command clock-now id)))
