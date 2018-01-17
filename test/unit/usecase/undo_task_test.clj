@@ -21,9 +21,14 @@
        (let [task-id (do-and-delay create-task/execute! store "Buy milk")
              done-id (do-and-delay do-task/execute! store task-id)
              undone-id (undo-task/execute! store task-id)
-             events (load-events store)
              task (first (list-all-tasks/execute store))]
          (fact "Ids are preserved"
                task-id => undone-id)
          (fact "It makes tasks :active again"
                (:status task) => :active)))
+
+(facts "When undoing a unkown task"
+       (let [result (undo-task/execute! store "unkown-id")
+             events (load-events store)]
+         (fact "Should not add events to the store"
+               (count events) => 0)))
