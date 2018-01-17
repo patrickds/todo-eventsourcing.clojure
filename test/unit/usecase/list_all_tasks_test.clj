@@ -1,6 +1,7 @@
 (ns usecase.list-all-tasks-test
   (:require [midje.sweet :refer :all]
             [core.event-store :refer :all]
+            [core.clock :as clock]
             [event-store.in-memory :refer :all]
             [usecase.create-task :as create-task]
             [usecase.list-all-tasks :as list-all-tasks]))
@@ -20,8 +21,8 @@
              (list-all-tasks/execute store) => '()))
 
 (facts "When two tasks created"
-       (let [first-id (create-task/execute! store "Learn to play the guitar")
-             second-id (create-task/execute! store "Buy eggs")
+       (let [first-id (create-task/execute! store clock/clock-now "Learn to play the guitar")
+             second-id (create-task/execute! store clock/clock-now "Buy eggs")
              all-tasks (list-all-tasks/execute store)
              first-task (find-task-by-id all-tasks first-id)
              second-task (find-task-by-id all-tasks second-id)]

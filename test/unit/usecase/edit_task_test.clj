@@ -2,10 +2,14 @@
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [event-store.in-memory :refer :all]
+            [core.clock :as clock]
             [core.event-store :refer :all]
             [usecase.create-task :as create-task]
             [usecase.edit-task :as edit-task]
             [usecase.list-all-tasks :as list-all-tasks]))
+
+(defn clock-0 [] (clock/clock-now))
+(defn clock-1 [] (-> (clock-0) (.plusMinutes 5)))
 
 (def store (->InMemoryStore (atom '())))
 (defn reset-store [] (swap! (:state store) empty))
@@ -17,17 +21,9 @@
        (filter #(= id (:id %)))
        first))
 
-(defn create-task-and-delay!
-  "Create a task and delay 1 ms to prevent dates crashing that causes unordered events (not proud of this).
-   Should I inject the clock ? :thinking_face:"
-  [store description]
-  (let [task-id (create-task/execute! store description)]
-    (Thread/sleep 1)
-    task-id))
-
 (facts "When creating one task and editing it"
-       (let [task-id (create-task-and-delay! store "Buy 6 eggs")
-             edited-task-id (edit-task/execute! store task-id "Buy 12 eggs")
+       (let [task-id (create-task/execute! store clock-0 "Buy 6 eggs")
+             edited-task-id (edit-task/execute! store clock-1 task-id "Buy 12 eggs")
              all-tasks (list-all-tasks/execute store)
              task (find-task-by-id all-tasks task-id)]
          (fact "Original task and edited should have the same id"
@@ -38,7 +34,7 @@
                (:description task) => "Buy 12 eggs")))
 
 (facts "When editing a task that doesn't existe"
-       (let [result (edit-task/execute! store "unknown-id" "Buy 12 eggs")
+       (let [result (edit-task/execute! store clock-0 "unknown-id" "Buy 12 eggs")
              events (load-events store)]
          (fact "It should fail with proper message"
                result => f/failed?
