@@ -23,7 +23,7 @@ format:
 	lein cljfmt fix
 
 .PHONY: analyze
-analize:
+analyze:
 	lein kibit
 
 .PHONY: pre.commit
