@@ -1,5 +1,6 @@
 (ns usecase.clear-task-test
   (:require [midje.sweet :refer :all]
+            [failjure.core :as f]
             [event-store.in-memory :refer :all]
             [core.clock :as clock]
             [usecase.create-task :as create-task]
@@ -18,3 +19,8 @@
             _ (clear-task/execute! store clock-1 task-id)
             all-tasks (list-all-tasks/execute store)]
         (count all-tasks) => 0))
+
+(fact "It fails with a proper message when task doesn't exist"
+      (let [result (clear-task/execute! store clock-1 "unkown-id")]
+        result => f/failed?
+        (f/message result) => "Task with id unkown-id not found"))
