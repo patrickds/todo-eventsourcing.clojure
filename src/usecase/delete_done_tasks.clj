@@ -1,7 +1,6 @@
-(ns usecase.clear-done-tasks
+(ns usecase.delete-done-tasks
   (:require [failjure.core :as f]
-            [core.commands.clear-task :refer :all]
-            [usecase.clear-task :as clear-task]
+            [usecase.delete-task :as delete-task]
             [usecase.list-all-tasks :as list-all-tasks]))
 
 (defn- task-completed? [task]
@@ -10,9 +9,9 @@
 (defn execute! [store clock-now]
   (let [state (list-all-tasks/execute store)
         done-tasks (filter task-completed? state)
-        clear-task (partial clear-task/execute! store clock-now)]
+        delete-task (partial delete-task/execute! store clock-now)]
     (f/ok->> state
              (filter task-completed?)
              (map :id)
-             (map clear-task)
+             (map delete-task)
              (doall))))

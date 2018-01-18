@@ -3,7 +3,7 @@
             [core.queries.reduce-task-edited :refer :all]
             [core.queries.reduce-task-done :refer :all]
             [core.queries.reduce-task-undone :refer :all]
-            [core.queries.reduce-task-cleared :refer :all]))
+            [core.queries.reduce-task-deleted :refer :all]))
 
 (defn- tasks-reducer [acc current]
   (condp = (:type current)
@@ -11,7 +11,7 @@
     :task-edited (reduce-task-edited acc current)
     :task-done (reduce-task-done acc current)
     :task-undone (reduce-task-undone acc current)
-    :task-cleared (reduce-task-cleared acc current)
+    :task-deleted (reduce-task-deleted acc current)
     acc))
 
 (defn reduce-all-tasks [events]
