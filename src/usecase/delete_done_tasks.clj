@@ -10,8 +10,8 @@
   (let [state (list-all-tasks/execute store)
         done-tasks (filter task-completed? state)
         delete-task (partial delete-task/execute! store clock-now)]
-    (f/ok->> state
-             (filter task-completed?)
-             (map :id)
-             (map delete-task)
-             (doall))))
+    (->> state
+         (filter task-completed?)
+         (map :id)
+         (map delete-task)
+         (doall))))
