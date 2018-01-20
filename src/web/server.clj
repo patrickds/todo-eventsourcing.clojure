@@ -8,6 +8,7 @@
             [event-store.in-memory :refer :all]
             [usecase.create-task :as create-task]
             [usecase.do-task :as do-task]
+            [usecase.undo-task :as undo-task]
             [usecase.list-all-tasks :as list-tasks]
             [web.param-parser :refer [parse-params]]))
 
@@ -17,11 +18,18 @@
   (create-task/execute! store clock-now description))
 
 (defn do-task! [task-id]
-  (let [result (do-task/execute! store clock-now task-id)]
-    result))
+  (do-task/execute! store clock-now task-id))
+
+(defn undo-task! [task-id]
+  (undo-task/execute! store clock-now task-id))
 
 (defn list-tasks []
   (list-tasks/execute store))
+
+(defn not-found-response [result]
+  {:status 404
+   :headers {}
+   :body (f/message result)})
 
 (defroutes handler
   (GET "/list-tasks" [] (list-tasks))
@@ -35,9 +43,14 @@
     (let [uuid (java.util.UUID/fromString task-id)
           result (do-task! uuid)]
       (if (f/failed? result)
-        {:status 404
-         :headers {}
-         :body (f/message result)}
+        (not-found-response result)
+        (str result))))
+
+  (POST "/undo-task/:task-id" [task-id]
+    (let [uuid (java.util.UUID/fromString task-id)
+          result (undo-task! uuid)]
+      (if (f/failed? result)
+        (not-found-response result)
         (str result)))))
 
 (def server
