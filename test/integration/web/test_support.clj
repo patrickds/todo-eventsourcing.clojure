@@ -8,6 +8,7 @@
 (defonce server nil)
 
 (defn start-server! []
+  (reset! (:state web-server/store) '())
   (alter-var-root
    #'server
    (fn [_]
@@ -23,16 +24,23 @@
 (defn parse-json [string]
   (json/parse-string string true))
 
-(defn http-get [url] (client/get url))
-(defn http-post [url] (client/post url))
+(defn http-get [url]
+  (try
+    (client/get url)
+    (catch Exception e (ex-data e))))
+
+(defn http-post
+  ([url] (http-post url {}))
+  ([url body] (try
+                (client/post url body)
+                (catch Exception e (ex-data e)))))
 
 (defn http-get-json-body [url]
-  (-> url
-      http-get
-      :body
-      parse-json))
+  (-> (http-get url) :body parse-json))
 
 (defn http-post-json-body [url body]
-  (let [json-body (json/generate-string body)]
-    (client/post url {:body json-body
-                      :content-type :json})))
+  (http-post url {:body (json/generate-string body)
+                  :content-type :json}))
+
+(defn response-as-uuid [response]
+  (-> response :body java.util.UUID/fromString))
