@@ -12,7 +12,7 @@
   (alter-var-root
    #'server
    (fn [_]
-     (web-server/-main :port 3000 :block-thread? :false))))
+     (web-server/-main :port 5000 :block-thread? :false))))
 
 (defn stop-server! []
   (alter-var-root
@@ -44,3 +44,5 @@
 
 (defn response-as-uuid [response]
   (-> response :body java.util.UUID/fromString))
+
+(def base-url "http://localhost:5000")
