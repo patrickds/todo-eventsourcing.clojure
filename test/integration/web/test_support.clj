@@ -5,21 +5,17 @@
             [cheshire.core :as json]
             [web.server :as web-server]))
 
-(defonce server nil)
+(def server (atom nil))
 
 (defn start-server! []
   (reset! (:state web-server/store) '())
-  (alter-var-root
-   #'server
-   (fn [_]
-     (web-server/-main :port 5000 :block-thread? :false))))
+  (swap! server
+         (fn [_]
+           (web-server/-main :port 5000 :block-thread? :false))))
 
 (defn stop-server! []
-  (alter-var-root
-   #'server
-   (fn [server]
-     (when server
-       (.stop server)))))
+  (when @server
+    (.stop @server)))
 
 (defn parse-json [string]
   (json/parse-string string true))
