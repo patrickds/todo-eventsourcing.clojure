@@ -2,6 +2,14 @@
 install:
 	lein deps
 
+.PHONY: run
+run:
+	lein run -m web.server/-main
+
+.PHONY: run.watch
+run.watch:
+	lein ring server
+
 .PHONY: test
 test:
 	lein midje

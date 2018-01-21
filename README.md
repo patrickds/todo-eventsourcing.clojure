@@ -17,6 +17,8 @@ A basic todo system architected around event sourcing techniques :)
 
 ```
 $ make install        # install all dependencies
+$ make run            # run server on :port 3000
+$ make run.watch      # run server and reloads on changes
 $ make test           # runs all tests
 $ make test.watch     # runs tests in watch mode
 $ make coverage       # runs code coverage
