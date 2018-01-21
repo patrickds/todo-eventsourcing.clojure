@@ -11,6 +11,7 @@
             [usecase.undo-task :as undo-task]
             [usecase.edit-task :as edit-task]
             [usecase.delete-task :as delete-task]
+            [usecase.delete-done-tasks :as delete-done-tasks]
             [usecase.list-all-tasks :as list-tasks]
             [web.param-parser :refer [parse-params]]))
 
@@ -31,6 +32,9 @@
 (defn delete-task! [task-id]
   (delete-task/execute! store clock-now task-id))
 
+(defn delete-done-tasks! []
+  (delete-done-tasks/execute! store clock-now))
+
 (defn list-tasks []
   (list-tasks/execute store))
 
@@ -45,42 +49,46 @@
    :body {}})
 
 (defroutes handler
-           (GET "/list-tasks" [] (list-tasks))
+  (GET "/list-tasks" [] (list-tasks))
 
-           (POST "/create-task" request
-                 (let [description (get-in request [:body :description])
-                       task-id (create-task! description)]
-                   (str task-id)))
+  (POST "/create-task" request
+    (let [description (get-in request [:body :description])
+          task-id (create-task! description)]
+      (str task-id)))
 
-           (POST "/do-task/:task-id" [task-id]
-                 (let [uuid (java.util.UUID/fromString task-id)
-                       result (do-task! uuid)]
-                   (if (f/failed? result)
-                     (not-found-response result)
-                     (str result))))
+  (POST "/do-task/:task-id" [task-id]
+    (let [uuid (java.util.UUID/fromString task-id)
+          result (do-task! uuid)]
+      (if (f/failed? result)
+        (not-found-response result)
+        (str result))))
 
-           (POST "/undo-task/:task-id" [task-id]
-                 (let [uuid (java.util.UUID/fromString task-id)
-                       result (undo-task! uuid)]
-                   (if (f/failed? result)
-                     (not-found-response result)
-                     (str result))))
+  (POST "/undo-task/:task-id" [task-id]
+    (let [uuid (java.util.UUID/fromString task-id)
+          result (undo-task! uuid)]
+      (if (f/failed? result)
+        (not-found-response result)
+        (str result))))
 
-           (POST "/edit-task/:task-id" request
-                 (let [task-id (get-in request [:params :task-id])
-                       uuid (java.util.UUID/fromString task-id)
-                       description (get-in request [:body :description])
-                       result (edit-task! uuid description)]
-                   (if (f/failed? result)
-                     (not-found-response result)
-                     (str result))))
+  (POST "/edit-task/:task-id" request
+    (let [task-id (get-in request [:params :task-id])
+          uuid (java.util.UUID/fromString task-id)
+          description (get-in request [:body :description])
+          result (edit-task! uuid description)]
+      (if (f/failed? result)
+        (not-found-response result)
+        (str result))))
 
-           (POST "/delete-task/:task-id" [task-id]
-                 (let [uuid (java.util.UUID/fromString task-id)
-                       result (delete-task! uuid)]
-                   (if (f/failed? result)
-                     (not-found-response result)
-                     (ok-response)))))
+  (POST "/delete-task/:task-id" [task-id]
+    (let [uuid (java.util.UUID/fromString task-id)
+          result (delete-task! uuid)]
+      (if (f/failed? result)
+        (not-found-response result)
+        (ok-response))))
+
+  (POST "/delete-done-tasks" []
+    (delete-done-tasks!)
+    (ok-response)))
 
 (def server
   (-> handler
