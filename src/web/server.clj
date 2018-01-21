@@ -10,6 +10,7 @@
             [usecase.do-task :as do-task]
             [usecase.undo-task :as undo-task]
             [usecase.edit-task :as edit-task]
+            [usecase.delete-task :as delete-task]
             [usecase.list-all-tasks :as list-tasks]
             [web.param-parser :refer [parse-params]]))
 
@@ -27,6 +28,9 @@
 (defn edit-task! [task-id description]
   (edit-task/execute! store clock-now task-id description))
 
+(defn delete-task! [task-id]
+  (delete-task/execute! store clock-now task-id))
+
 (defn list-tasks []
   (list-tasks/execute store))
 
@@ -34,6 +38,11 @@
   {:status 404
    :headers {}
    :body (f/message result)})
+
+(defn ok-response []
+  {:status 200
+   :headers {}
+   :body {}})
 
 (defroutes handler
            (GET "/list-tasks" [] (list-tasks))
@@ -64,7 +73,14 @@
                        result (edit-task! uuid description)]
                    (if (f/failed? result)
                      (not-found-response result)
-                     (str result)))))
+                     (str result))))
+
+           (POST "/delete-task/:task-id" [task-id]
+                 (let [uuid (java.util.UUID/fromString task-id)
+                       result (delete-task! uuid)]
+                   (if (f/failed? result)
+                     (not-found-response result)
+                     (ok-response)))))
 
 (def server
   (-> handler
