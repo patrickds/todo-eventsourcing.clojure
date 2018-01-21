@@ -8,10 +8,10 @@
 (def server (atom nil))
 
 (defn start-server! []
-  (reset! (:state web-server/store) '())
   (swap! server
          (fn [_]
-           (web-server/-main :port 5000 :block-thread? :false))))
+           (web-server/-main :port 5000
+                             :block-thread? :false))))
 
 (defn stop-server! []
   (when @server

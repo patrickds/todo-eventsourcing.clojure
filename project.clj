@@ -18,5 +18,5 @@
                                        [jonase/eastwood "0.2.5"]
                                        [lein-cloverage "1.0.10"]
                                        [lein-kibit "0.1.5"]]}}
-            :ring {:handler web.server/server
+            :ring {:handler web.server/development-server
                    :reload-paths ["src/"]})
