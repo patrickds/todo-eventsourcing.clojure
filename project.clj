@@ -12,10 +12,11 @@
                                             [ring/ring-json "0.4.0"]
                                             [compojure "1.6.0"]
                                             [cheshire "5.8.0"]]
-                             :plugins [[lein-ring "0.12.1"]
+                             :plugins [[lein-ring "0.12.3"]
                                        [lein-midje "3.2.1"]
                                        [lein-cljfmt "0.5.7"]
                                        [jonase/eastwood "0.2.5"]
                                        [lein-cloverage "1.0.10"]
                                        [lein-kibit "0.1.5"]]}}
-            :ring {:handler web.server/server})
+            :ring {:handler web.server/server
+                   :reload-paths ["src/"]})
