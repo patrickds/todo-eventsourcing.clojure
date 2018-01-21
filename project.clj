@@ -3,14 +3,14 @@
             :url "https://github.com/patrickds/todo-eventsourcing.clojure"
             :license {:name "Eclipse Public License"
                       :url "http://www.eclipse.org/legal/epl-v10.html"}
-            :dependencies [[org.clojure/clojure "1.9.0"]]
+            :dependencies [[org.clojure/clojure "1.9.0"]
+                           [failjure "1.2.0"]
+                           [ring/ring-core "1.6.3"]
+                           [ring/ring-jetty-adapter "1.6.3"]
+                           [ring/ring-json "0.4.0"]
+                           [compojure "1.6.0"]]
             :profiles {:dev {:dependencies [[midje "1.9.1"]
-                                            [failjure "1.2.0"]
                                             [clj-http "3.7.0"]
-                                            [ring/ring-core "1.6.3"]
-                                            [ring/ring-jetty-adapter "1.6.3"]
-                                            [ring/ring-json "0.4.0"]
-                                            [compojure "1.6.0"]
                                             [cheshire "5.8.0"]]
                              :plugins [[lein-ring "0.12.3"]
                                        [lein-midje "3.2.1"]
