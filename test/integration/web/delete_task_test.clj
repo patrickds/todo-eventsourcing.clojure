@@ -1,6 +1,6 @@
-(ns web.delete-task-test
+(ns integration.web.delete-task-test
   (:require [midje.sweet :refer :all]
-            [web.test-support :refer :all]))
+            [integration.web.test-support :refer :all]))
 
 (def base-url "http://localhost:3000")
 

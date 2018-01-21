@@ -1,4 +1,4 @@
-(ns usecase.do-task-test
+(ns unit.usecase.do-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [core.clock :as clock]

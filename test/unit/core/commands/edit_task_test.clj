@@ -1,4 +1,4 @@
-(ns core.commands.edit-task-test
+(ns unit.core.commands.edit-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [core.commands.edit-task :refer :all]))

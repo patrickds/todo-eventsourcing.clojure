@@ -1,4 +1,4 @@
-(ns core.commands.create-task-test
+(ns unit.core.commands.create-task-test
   (:require [midje.sweet :refer :all]
             [core.commands.create-task :refer :all]))
 

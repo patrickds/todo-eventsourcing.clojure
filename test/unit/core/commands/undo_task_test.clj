@@ -1,4 +1,4 @@
-(ns core.commands.undo-task-test
+(ns unit.core.commands.undo-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [core.commands.undo-task :refer :all]))

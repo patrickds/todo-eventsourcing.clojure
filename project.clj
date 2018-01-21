@@ -3,7 +3,6 @@
             :url "https://github.com/patrickds/todo-eventsourcing.clojure"
             :license {:name "Eclipse Public License"
                       :url "http://www.eclipse.org/legal/epl-v10.html"}
-            :test-paths ["test/unit" "test/integration"]
             :dependencies [[org.clojure/clojure "1.9.0"]]
             :profiles {:dev {:dependencies [[midje "1.9.1"]
                                             [failjure "1.2.0"]

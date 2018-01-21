@@ -1,4 +1,4 @@
-(ns usecase.delete-done-tasks-test
+(ns unit.usecase.delete-done-tasks-test
   (:require [midje.sweet :refer :all]
             [event-store.in-memory :refer :all]
             [core.clock :as clock]

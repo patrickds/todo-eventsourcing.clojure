@@ -1,4 +1,4 @@
-(ns usecase.undo-task-test
+(ns unit.usecase.undo-task-test
   (:require [midje.sweet :refer :all]
             [core.clock :as clock]
             [core.event-store :refer :all]

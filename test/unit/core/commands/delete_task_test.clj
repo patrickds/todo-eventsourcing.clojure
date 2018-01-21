@@ -1,4 +1,4 @@
-(ns core.commands.delete-task-test
+(ns unit.core.commands.delete-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [core.commands.delete-task :refer :all]))

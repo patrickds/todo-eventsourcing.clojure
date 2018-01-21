@@ -1,4 +1,4 @@
-(ns core.queries.reduce-all-tasks-test
+(ns unit.core.queries.reduce-all-tasks-test
   (:require [midje.sweet :refer :all]
             [core.queries.reduce-all-tasks :refer :all]))
 

@@ -1,4 +1,4 @@
-(ns usecase.delete-task-test
+(ns unit.usecase.delete-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [event-store.in-memory :refer :all]

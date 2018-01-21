@@ -1,4 +1,4 @@
-(ns usecase.list-all-tasks-test
+(ns unit.usecase.list-all-tasks-test
   (:require [midje.sweet :refer :all]
             [core.event-store :refer :all]
             [core.clock :as clock]

@@ -1,4 +1,4 @@
-(ns web.test-support
+(ns integration.web.test-support
   (:require [midje.sweet :refer :all]
             [ring.adapter.jetty :as jetty]
             [clj-http.client :as client]

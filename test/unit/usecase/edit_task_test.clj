@@ -1,4 +1,4 @@
-(ns usecase.edit-task-test
+(ns unit.usecase.edit-task-test
   (:require [midje.sweet :refer :all]
             [failjure.core :as f]
             [event-store.in-memory :refer :all]

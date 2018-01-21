@@ -1,4 +1,4 @@
-(ns web.param-parser-test
+(ns unit.web.param-parser-test
   (:require [midje.sweet :refer :all]
             [web.param-parser :refer :all]))
 
