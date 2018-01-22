@@ -8,7 +8,7 @@
 
 (defn make-store [] (->InMemoryStore (atom '())))
 
-(defn handler [store] (routes (my-routes store)))
+(defn handler [store] (routes (api-routes store)))
 
 (defn make-server [store]
   (-> (handler store)

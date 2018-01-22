@@ -4,7 +4,7 @@
             [failjure.core :as f]
             [web.controller :as controller]))
 
-(defn my-routes [store]
+(defn api-routes [store]
   (routes
    (GET "/list-tasks" request (controller/list-tasks store request))
    (POST "/create-task" request (controller/create-task! store request))
