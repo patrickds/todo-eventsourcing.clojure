@@ -4,57 +4,13 @@
             [failjure.core :as f]
             [web.controller :as controller]))
 
-(defn not-found-response [result]
-  {:status 404
-   :headers {}
-   :body (f/message result)})
-
-(defn ok-response []
-  {:status 200
-   :headers {}
-   :body {}})
-
 (defn my-routes [store]
   (routes
-   (GET "/list-tasks" [] (controller/list-tasks store))
-
-   (POST "/create-task" request
-     (let [description (get-in request [:body :description])
-           task-id (controller/create-task! store description)]
-       (str task-id)))
-
-   (POST "/do-task/:task-id" [task-id]
-     (let [uuid (java.util.UUID/fromString task-id)
-           result (controller/do-task! store uuid)]
-       (if (f/failed? result)
-         (not-found-response result)
-         (str result))))
-
-   (POST "/undo-task/:task-id" [task-id]
-     (let [uuid (java.util.UUID/fromString task-id)
-           result (controller/undo-task! store uuid)]
-       (if (f/failed? result)
-         (not-found-response result)
-         (str result))))
-
-   (POST "/edit-task/:task-id" request
-     (let [task-id (get-in request [:params :task-id])
-           uuid (java.util.UUID/fromString task-id)
-           description (get-in request [:body :description])
-           result (controller/edit-task! store uuid description)]
-       (if (f/failed? result)
-         (not-found-response result)
-         (str result))))
-
-   (POST "/delete-task/:task-id" [task-id]
-     (let [uuid (java.util.UUID/fromString task-id)
-           result (controller/delete-task! store uuid)]
-       (if (f/failed? result)
-         (not-found-response result)
-         (ok-response))))
-
-   (POST "/delete-done-tasks" []
-     (controller/delete-done-tasks! store)
-     (ok-response))
-
+   (GET "/list-tasks" request (controller/list-tasks store request))
+   (POST "/create-task" request (controller/create-task! store request))
+   (POST "/do-task/:task-id" request (controller/do-task! store request))
+   (POST "/undo-task/:task-id" request (controller/undo-task! store request))
+   (POST "/edit-task/:task-id" request (controller/edit-task! store request))
+   (POST "/delete-task/:task-id" request (controller/delete-task! store request))
+   (POST "/delete-done-tasks" request (controller/delete-done-tasks! store request))
    (route/not-found "Not found")))

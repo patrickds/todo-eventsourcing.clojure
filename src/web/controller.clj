@@ -1,5 +1,7 @@
 (ns web.controller
-  (:require [core.clock :refer :all]
+  (:require [failjure.core :as f]
+            [ring.util.response :refer :all]
+            [core.clock :refer :all]
             [usecase.create-task :as create-task]
             [usecase.do-task :as do-task]
             [usecase.undo-task :as undo-task]
@@ -8,23 +10,46 @@
             [usecase.delete-done-tasks :as delete-done-tasks]
             [usecase.list-all-tasks :as list-tasks]))
 
-(defn create-task! [store description]
-  (create-task/execute! store clock-now description))
+(defn- get-task-id [request]
+  (-> request
+      :params
+      :task-id
+      java.util.UUID/fromString))
 
-(defn do-task! [store task-id]
-  (do-task/execute! store clock-now task-id))
+(defn- failjure-respond [result]
+  (if (f/failed? result)
+    (not-found (f/message result))
+    (str result)))
 
-(defn undo-task! [store task-id]
-  (undo-task/execute! store clock-now task-id))
-
-(defn edit-task! [store task-id description]
-  (edit-task/execute! store clock-now task-id description))
-
-(defn delete-task! [store task-id]
-  (delete-task/execute! store clock-now task-id))
-
-(defn delete-done-tasks! [store]
-  (delete-done-tasks/execute! store clock-now))
-
-(defn list-tasks [store]
+(defn list-tasks [store request]
   (list-tasks/execute store))
+
+(defn create-task! [store request]
+  (let [description (get-in request [:body :description])
+        task-id (create-task/execute! store clock-now description)]
+    (str task-id)))
+
+(defn do-task! [store request]
+  (let [task-id (get-task-id request)
+        result (do-task/execute! store clock-now task-id)]
+    (failjure-respond result)))
+
+(defn undo-task! [store request]
+  (let [task-id (get-task-id request)
+        result (undo-task/execute! store clock-now task-id)]
+    (failjure-respond result)))
+
+(defn edit-task! [store request]
+  (let [task-id (get-task-id request)
+        description (get-in request [:body :description])
+        result (edit-task/execute! store clock-now task-id description)]
+    (failjure-respond result)))
+
+(defn delete-task! [store request]
+  (let [task-id (get-task-id request)
+        result (delete-task/execute! store clock-now task-id)]
+    (failjure-respond result)))
+
+(defn delete-done-tasks! [store request]
+  (delete-done-tasks/execute! store clock-now)
+  (response {}))
