@@ -8,7 +8,8 @@ run:
 
 .PHONY: run.watch
 run.watch:
-	lein ring server
+	lein clean
+	lein with-profile dev ring server
 
 .PHONY: test
 test:
