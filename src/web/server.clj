@@ -4,7 +4,8 @@
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [event-store.in-memory :refer :all]
             [web.routes :refer :all]
-            [web.param-parser :refer [parse-params]]))
+            [web.param-parser :refer [parse-params]])
+  (:gen-class))
 
 (defn make-store [] (->InMemoryStore (atom '())))
 
