@@ -21,4 +21,5 @@
                                        [lein-kibit "0.1.5"]]
                              :ring {:handler web.server/development-server
                                     :reload-paths ["src/"]}}}
+            :uberjar-name "todoes.jar"
             :main web.server)

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  app:
+    image: clojure:lein-2.8.1-alpine
+    working_dir: /home/app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/app
+    command: lein with-profile dev ring server-headless
