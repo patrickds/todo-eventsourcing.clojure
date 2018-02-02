@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   app:
     image: clojure:lein-2.8.1-alpine
@@ -7,4 +7,10 @@ services:
       - "3000:3000"
     volumes:
       - .:/home/app
-    command: lein with-profile dev ring server-headless
+      - type: volume
+        source: dependencies
+        target: /root/.m2
+    command: lein run -m web.server/-main
+
+volumes:
+  dependencies:

@@ -1,39 +1,40 @@
+docker-run = docker-compose run --rm --service-ports app
+
 .PHONY: install
 install:
-	lein deps
+	$(docker-run) lein deps
 
 .PHONY: run
 run:
-	lein run -m web.server/-main
+	docker-compose up
 
 .PHONY: run.watch
 run.watch:
-	lein clean
-	lein with-profile dev ring server
+	$(docker-run) lein with-profile dev ring server-headless
 
 .PHONY: test
 test:
-	lein midje
+	$(docker-run) lein midje
 
 .PHONY: test.watch
 test.watch:
-	lein midje :autotest
+	$(docker-run) lein midje :autotest
 
 .PHONY: coverage
 coverage:
-	lein cloverage --runner :midje --codecov
+	$(docker-run) lein cloverage --runner :midje --codecov
 
 .PHONY: lint
 lint:
-	lein eastwood
+	$(docker-run) lein eastwood
 
 .PHONY: format
 format:
-	lein cljfmt fix
+	$(docker-run) lein cljfmt fix
 
 .PHONY: analyze
 analyze:
-	lein kibit
+	$(docker-run) lein kibit
 
 .PHONY: pre.commit
 pre.commit:

@@ -1,4 +1,8 @@
 language: clojure
+
+services:
+  - docker
+
 jobs:
   include:
     - stage: build
