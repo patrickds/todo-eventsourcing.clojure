@@ -13,6 +13,9 @@
 
 A basic todo system architected around event sourcing techniques :)
 
+## First things first
+Make sure you have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) installed.
+
 ## Usage
 
 ```
