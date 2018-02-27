@@ -4,7 +4,8 @@
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [event-store.in-memory :refer :all]
             [web.routes :refer :all]
-            [web.param-parser :refer [parse-params]])
+            [web.param-parser :refer [parse-params]]
+            [muuntaja.middleware :as m])
   (:gen-class))
 
 (defn make-store [] (->InMemoryStore (atom '())))
@@ -13,8 +14,9 @@
 
 (defn make-server [store]
   (-> (handler store)
-      (wrap-json-response)
-      (wrap-json-body {:keywords? true})))
+      (m/wrap-format)))
+      ; (wrap-json-response)
+      ; (wrap-json-body {:keywords? true})))
 
 (def development-server
   "Global var used by lein ring for interactive development"
