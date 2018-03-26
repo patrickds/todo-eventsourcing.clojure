@@ -8,7 +8,9 @@
                            [ring/ring-core "1.6.3"]
                            [ring/ring-jetty-adapter "1.6.3"]
                            [ring/ring-json "0.4.0"]
-                           [compojure "1.6.0"]]
+                           [compojure "1.6.0"]
+                           [metosin/compojure-api "2.0.0-alpha18"]
+                           [metosin/spec-tools "0.6.1"]]
             :profiles {:uberjar {:aot :all}
                        :dev {:dependencies [[midje "1.9.1"]
                                             [clj-http "3.7.0"]

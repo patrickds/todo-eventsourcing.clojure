@@ -5,6 +5,8 @@ services:
     working_dir: /home/app
     ports:
       - "3000:3000"
+    networks:
+      - net1
     volumes:
       - .:/home/app
       - type: volume
@@ -12,5 +14,17 @@ services:
         target: /root/.m2
     command: lein run -m web.server/-main
 
+  swagger:
+    image: swaggerapi/swagger-ui:v3.11.0
+    ports:
+      - "80:8080"
+    networks:
+      - net1
+    environment:
+      - API_URL=app:3000/swagger.json
+
 volumes:
   dependencies:
+
+networks:
+  net1:
